@@ -69,163 +69,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Mobile_Application_Project" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/12/31/Mobile_Application_Project/" class="article-date">
-  <time class="dt-published" datetime="2024-12-31T05:00:00.000Z" itemprop="datePublished">2024-12-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/12/31/Mobile_Application_Project/">DreamCatcher Project</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="final-report"><a href="#final-report" class="headerlink" title="final report"></a>final report</h2><embed src="/pdfs/DreamCatcher.pdf" width="800" height="1000" type="application/pdf">
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/31/Mobile_Application_Project/" data-id="cm5knymh40003mqqt8lnvg5rt" data-title="DreamCatcher Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Distrubuted_System_Project" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/12/30/Distrubuted_System_Project/" class="article-date">
-  <time class="dt-published" datetime="2024-12-30T05:00:00.000Z" itemprop="datePublished">2024-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Project-Report-Sharded-Distributed-Key-Value-Store-with-OmniPaxos-Consensus-Go"><a href="#Project-Report-Sharded-Distributed-Key-Value-Store-with-OmniPaxos-Consensus-Go" class="headerlink" title="Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)"></a>Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a><strong>Introduction</strong></h2><p>This project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant <strong>Sharded Key&#x2F;Value Store</strong> using the OmniPaxos consensus protocol. The system partitions keys across multiple replica groups to improve throughput and support scalability. The project consists of two main components:</p>
-<ol>
-<li><strong>Shard Controller</strong>: Manages shard assignments to replica groups and handles configuration changes.</li>
-<li><strong>Shard Key&#x2F;Value Servers</strong>: Stores and manages shards, ensuring linearizable operations across configurations.</li>
-</ol>
-<p>Additionally, performance benchmarking was conducted to analyze latency and throughput under various workloads using CloudLab’s infrastructure.</p>
-<hr>
-<h2 id="System-Design-Overview"><a href="#System-Design-Overview" class="headerlink" title="System Design Overview"></a><strong>System Design Overview</strong></h2><h3 id="OmniPaxos-Overview"><a href="#OmniPaxos-Overview" class="headerlink" title="OmniPaxos Overview"></a><strong>OmniPaxos Overview</strong></h3><p>OmniPaxos is a consensus protocol that ensures fault-tolerant and consistent state replication across distributed systems. In this project, OmniPaxos was employed to achieve the following:</p>
-<ul>
-<li><strong>Fault Tolerance</strong>: Allows the system to tolerate failures of a minority of nodes within a replica group or the shard controller.</li>
-<li><strong>Log Replication</strong>: Ensures all replicas in a group apply operations in the same order, maintaining linearizability.</li>
-<li><strong>Dynamic Reconfiguration</strong>: Handles configuration changes, such as shard migrations, while ensuring a consistent system state.</li>
-</ul>
-<p>Key components of OmniPaxos in this project:</p>
-<ol>
-<li><strong>Consensus Module</strong>: Replicates both client operations (e.g., Put&#x2F;Get&#x2F;Append) and configuration changes across replica groups.</li>
-<li><strong>Apply Channel</strong>: Delivers ordered log entries to the state machine, ensuring consistency during shard migrations and reconfigurations.</li>
-<li><strong>Fault Recovery</strong>: Recovers from node failures by replaying logs and synchronizing missing data between nodes.</li>
-</ol>
-<p>OmniPaxos’ deterministic logging mechanism was crucial for coordinating shard migrations and ensuring a single source of truth for shard ownership.</p>
-<h3 id="Shard-Controller"><a href="#Shard-Controller" class="headerlink" title="Shard Controller"></a><strong>Shard Controller</strong></h3><p>The shard controller is responsible for managing the mapping of shards to replica groups. It supports the following RPC operations:</p>
-<ul>
-<li><strong>Join</strong>: Add a new replica group to the system.</li>
-<li><strong>Leave</strong>: Remove a replica group from the system.</li>
-<li><strong>Move</strong>: Assign a specific shard to a replica group.</li>
-<li><strong>Query</strong>: Retrieve the current or specific past configurations.</li>
-</ul>
-<p>The shard controller ensures fault-tolerance using OmniPaxos and dynamically balances shards to minimize migration overhead during configuration changes.</p>
-<h3 id="Shard-Key-Value-Servers"><a href="#Shard-Key-Value-Servers" class="headerlink" title="Shard Key&#x2F;Value Servers"></a><strong>Shard Key&#x2F;Value Servers</strong></h3><p>Each replica group operates as a Paxos-backed storage system, serving a subset of shards. Key features include:</p>
-<ul>
-<li><strong>Linearizability</strong>: Ensures that all operations appear in a single, globally consistent order.</li>
-<li><strong>Shard Migration</strong>: During reconfiguration, servers transfer shard data between groups via RPC.</li>
-<li><strong>Duplicate Request Handling</strong>: Ensures at-most-once semantics for client operations.</li>
-</ul>
-<h3 id="System-Workflow-Diagram"><a href="#System-Workflow-Diagram" class="headerlink" title="System Workflow Diagram"></a><strong>System Workflow Diagram</strong></h3><p>Below is an overview of the Sharded Key&#x2F;Value Store system workflow:</p>
-<p><img src="/pdfs/3B-Figure.png" alt="System Workflow"></p>
-<p>This diagram illustrates the interaction between clients, the shard controller, and shard key&#x2F;value servers. It also highlights the role of OmniPaxos in ensuring fault tolerance and consistency.</p>
-<hr>
-<h2 id="Performance-Benchmarking"><a href="#Performance-Benchmarking" class="headerlink" title="Performance Benchmarking"></a><strong>Performance Benchmarking</strong></h2><h3 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a><strong>Setup</strong></h3><p>Benchmarks were conducted on <strong>CloudLab</strong> using the following configuration:</p>
-<ul>
-<li><strong>Nodes</strong>: Single <code>r320</code> instance with Ubuntu 22.04 OS.</li>
-<li><strong>Sharding</strong>: Keys distributed across three benchmarks, simulating varying workloads.</li>
-<li><strong>Metrics</strong>: <ul>
-<li><strong>Latency</strong>: Measured in nanoseconds.</li>
-<li><strong>Throughput</strong>: Measured as operations per second.</li>
-</ul>
-</li>
-</ul>
-<h3 id="Benchmarking-Procedure"><a href="#Benchmarking-Procedure" class="headerlink" title="Benchmarking Procedure"></a><strong>Benchmarking Procedure</strong></h3><p>The benchmarking process involved running three workloads:</p>
-<ol>
-<li><strong>Benchmark A</strong>: Static configuration with no shard migration.</li>
-<li><strong>Benchmark B</strong>: Frequent shard migrations due to configuration changes.</li>
-<li><strong>Benchmark C</strong>: A hybrid workload with a mix of static and dynamic shard assignments.</li>
-</ol>
-<p>Metrics were instrumented during these benchmarks, and results were visualized using Matplotlib.</p>
-<hr>
-<h2 id="Results-and-Analysis"><a href="#Results-and-Analysis" class="headerlink" title="Results and Analysis"></a><strong>Results and Analysis</strong></h2><h3 id="Latency-Analysis"><a href="#Latency-Analysis" class="headerlink" title="Latency Analysis"></a><strong>Latency Analysis</strong></h3><p>The <strong>Cumulative Distribution Function (CDF)</strong> of latency for the three benchmarks is shown below:</p>
-<p><img src="/pdfs/LatencyBenchmark.png" alt="Latency CDF"></p>
-<h4 id="Observations"><a href="#Observations" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
-<li><strong>Benchmark A (Blue)</strong>: Exhibits the lowest latency due to its static configuration, with no overhead from shard migrations.</li>
-<li><strong>Benchmark B (Yellow)</strong>: Shows significantly higher latency due to frequent shard migrations, which introduce RPC overhead and coordination delays.</li>
-<li><strong>Benchmark C (Red)</strong>: Latency falls between A and B, as it mixes static and dynamic configurations, balancing stability and migration overhead.</li>
-</ul>
-<h3 id="Throughput-Analysis"><a href="#Throughput-Analysis" class="headerlink" title="Throughput Analysis"></a><strong>Throughput Analysis</strong></h3><p>The average throughput for each benchmark is summarized below:</p>
-<p><img src="/pdfs/ThroughputBenchmark.png" alt="Throughput Benchmark"></p>
-<h4 id="Observations-1"><a href="#Observations-1" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
-<li>Benchmark A achieves the highest throughput as no resources are spent on shard migrations.</li>
-<li>Benchmark B has the lowest throughput due to migration overhead.</li>
-<li>Benchmark C strikes a balance, providing moderate throughput.</li>
-</ul>
-<hr>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a><strong>Conclusion</strong></h2><p>This project demonstrates the implementation of a fault-tolerant, scalable Sharded Key&#x2F;Value Store with dynamic shard management. The performance benchmarking highlights the trade-offs between latency and throughput under varying workloads:</p>
-<ol>
-<li><strong>Static Configurations</strong> (Benchmark A): Best for low-latency, high-throughput systems where reconfiguration is rare.</li>
-<li><strong>Frequent Reconfigurations</strong> (Benchmark B): Suitable for highly dynamic environments but incurs higher latency and lower throughput.</li>
-<li><strong>Mixed Workloads</strong> (Benchmark C): Balances stability and adaptability, offering moderate performance.</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5knymh40002mqqt81x62a3p" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-resume_of_DayuLi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2024/07/18/resume_of_DayuLi/" class="article-date">
-  <time class="dt-published" datetime="2024-07-18T04:00:00.000Z" itemprop="datePublished">2024-07-18</time>
+    <a href="/2099/01/01/resume_of_DayuLi/" class="article-date">
+  <time class="dt-published" datetime="2099-01-01T05:00:00.000Z" itemprop="datePublished">2099-01-01</time>
 </a>
     
   </div>
@@ -236,7 +83,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2024/07/18/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
+      <a class="p-name article-title" href="/2099/01/01/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
     </h1>
   
 
@@ -244,7 +91,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><strong>Email:</strong> <a href="mailto:&#108;&#x64;&#x79;&#x40;&#x62;&#x75;&#46;&#101;&#x64;&#x75;">&#108;&#x64;&#x79;&#x40;&#x62;&#x75;&#46;&#101;&#x64;&#x75;</a> | <a href="mailto:&#108;&#100;&#x79;&#117;&#x75;&#x30;&#50;&#x32;&#48;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#108;&#100;&#x79;&#117;&#x75;&#x30;&#50;&#x32;&#48;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a> | <strong>Phone:</strong> (1) 857-205-7980</p>
+        <p><strong>Email:</strong> <a href="mailto:&#108;&#100;&#121;&#x40;&#x62;&#x75;&#x2e;&#x65;&#x64;&#117;">&#108;&#100;&#121;&#x40;&#x62;&#x75;&#x2e;&#x65;&#x64;&#117;</a> | <a href="mailto:&#x6c;&#x64;&#x79;&#117;&#117;&#x30;&#x32;&#x32;&#x30;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x6c;&#x64;&#x79;&#117;&#117;&#x30;&#x32;&#x32;&#x30;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;</a> | <strong>Phone:</strong> (1) 857-205-7980</p>
 <hr>
 <h2 id="EDUCATION"><a href="#EDUCATION" class="headerlink" title="EDUCATION"></a>EDUCATION</h2><p><strong>Boston University</strong><br><em>MA, US</em><br><strong>Master of Science (M.S.) in Computer Science</strong><br>09&#x2F;2023 – 01&#x2F;2025<br><strong>GPA:</strong> 3.71&#x2F;4.0<br><strong>Relevant Courses:</strong> Distributed System, Stream System, Machine Learning, Graduate Algorithms, Object-oriented Software Design, Mobile Appilication Development, Data Science Tools and Applications, Computational Fabrication</p>
 <p><strong>Chongqing University</strong><br><em>Chongqing, China</em><br><strong>Bachelor of Engineering (B.E.) in Software Engineering</strong><br>09&#x2F;2019 – 06&#x2F;2023<br><strong>GPA:</strong> 3.34&#x2F;4.0<br><strong>TOEFL:</strong> 103 (L28, S23, R30, W22)<br><strong>GRE:</strong> 329 (V 159, Q 170, AW 3.0)<br><strong>Honors:</strong> Excellent Scholarship of 2021-2022, Third Prize (Top 15%)<br><strong>Relevant Courses:</strong> Linear Algebra, Discrete Mathematics, Object-Oriented Programming, Data Structures and Algorithms, Database, Operating Systems, Computer Networks, Intro to Software Engineering, Software Requirement Analysis, Web Development, Computer Graphics, Intro to Artificial Intelligence, Intro to Data Science, Intro to Computer Security</p>
@@ -340,7 +187,158 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/07/18/resume_of_DayuLi/" data-id="cm5knymh50004mqqt31yz6c8r" data-title="Dayu Li&#39;s Resume" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2099/01/01/resume_of_DayuLi/" data-id="cm5koc6dk0003wvqtfb04an58" data-title="Dayu Li&#39;s Resume" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Mobile_Application_Project" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/12/31/Mobile_Application_Project/" class="article-date">
+  <time class="dt-published" datetime="2024-12-31T05:00:00.000Z" itemprop="datePublished">2024-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/12/31/Mobile_Application_Project/">DreamCatcher Project</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="final-report"><a href="#final-report" class="headerlink" title="final report"></a>final report</h2><embed src="/pdfs/DreamCatcher.pdf" width="800" height="1000" type="application/pdf">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/12/31/Mobile_Application_Project/" data-id="cm5koc6dj0001wvqthxh79f3w" data-title="DreamCatcher Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Distrubuted_System_Project" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/12/30/Distrubuted_System_Project/" class="article-date">
+  <time class="dt-published" datetime="2024-12-30T05:00:00.000Z" itemprop="datePublished">2024-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a><strong>Introduction</strong></h2><p>This project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant <strong>Sharded Key&#x2F;Value Store</strong> using the OmniPaxos consensus protocol. The system partitions keys across multiple replica groups to improve throughput and support scalability. The project consists of two main components:</p>
+<ol>
+<li><strong>Shard Controller</strong>: Manages shard assignments to replica groups and handles configuration changes.</li>
+<li><strong>Shard Key&#x2F;Value Servers</strong>: Stores and manages shards, ensuring linearizable operations across configurations.</li>
+</ol>
+<p>Additionally, performance benchmarking was conducted to analyze latency and throughput under various workloads using CloudLab’s infrastructure.</p>
+<hr>
+<h2 id="System-Design-Overview"><a href="#System-Design-Overview" class="headerlink" title="System Design Overview"></a><strong>System Design Overview</strong></h2><h3 id="OmniPaxos-Overview"><a href="#OmniPaxos-Overview" class="headerlink" title="OmniPaxos Overview"></a><strong>OmniPaxos Overview</strong></h3><p>OmniPaxos is a consensus protocol that ensures fault-tolerant and consistent state replication across distributed systems. In this project, OmniPaxos was employed to achieve the following:</p>
+<ul>
+<li><strong>Fault Tolerance</strong>: Allows the system to tolerate failures of a minority of nodes within a replica group or the shard controller.</li>
+<li><strong>Log Replication</strong>: Ensures all replicas in a group apply operations in the same order, maintaining linearizability.</li>
+<li><strong>Dynamic Reconfiguration</strong>: Handles configuration changes, such as shard migrations, while ensuring a consistent system state.</li>
+</ul>
+<p>Key components of OmniPaxos in this project:</p>
+<ol>
+<li><strong>Consensus Module</strong>: Replicates both client operations (e.g., Put&#x2F;Get&#x2F;Append) and configuration changes across replica groups.</li>
+<li><strong>Apply Channel</strong>: Delivers ordered log entries to the state machine, ensuring consistency during shard migrations and reconfigurations.</li>
+<li><strong>Fault Recovery</strong>: Recovers from node failures by replaying logs and synchronizing missing data between nodes.</li>
+</ol>
+<p>OmniPaxos’ deterministic logging mechanism was crucial for coordinating shard migrations and ensuring a single source of truth for shard ownership.</p>
+<h3 id="Shard-Controller"><a href="#Shard-Controller" class="headerlink" title="Shard Controller"></a><strong>Shard Controller</strong></h3><p>The shard controller is responsible for managing the mapping of shards to replica groups. It supports the following RPC operations:</p>
+<ul>
+<li><strong>Join</strong>: Add a new replica group to the system.</li>
+<li><strong>Leave</strong>: Remove a replica group from the system.</li>
+<li><strong>Move</strong>: Assign a specific shard to a replica group.</li>
+<li><strong>Query</strong>: Retrieve the current or specific past configurations.</li>
+</ul>
+<p>The shard controller ensures fault-tolerance using OmniPaxos and dynamically balances shards to minimize migration overhead during configuration changes.</p>
+<h3 id="Shard-Key-Value-Servers"><a href="#Shard-Key-Value-Servers" class="headerlink" title="Shard Key&#x2F;Value Servers"></a><strong>Shard Key&#x2F;Value Servers</strong></h3><p>Each replica group operates as a Paxos-backed storage system, serving a subset of shards. Key features include:</p>
+<ul>
+<li><strong>Linearizability</strong>: Ensures that all operations appear in a single, globally consistent order.</li>
+<li><strong>Shard Migration</strong>: During reconfiguration, servers transfer shard data between groups via RPC.</li>
+<li><strong>Duplicate Request Handling</strong>: Ensures at-most-once semantics for client operations.</li>
+</ul>
+<h3 id="System-Workflow-Diagram"><a href="#System-Workflow-Diagram" class="headerlink" title="System Workflow Diagram"></a><strong>System Workflow Diagram</strong></h3><p>Below is an overview of the Sharded Key&#x2F;Value Store system workflow:</p>
+<p><img src="/pdfs/3B-Figure.png" alt="System Workflow"></p>
+<p>This diagram illustrates the interaction between clients, the shard controller, and shard key&#x2F;value servers. It also highlights the role of OmniPaxos in ensuring fault tolerance and consistency.</p>
+<hr>
+<h2 id="Performance-Benchmarking"><a href="#Performance-Benchmarking" class="headerlink" title="Performance Benchmarking"></a><strong>Performance Benchmarking</strong></h2><h3 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a><strong>Setup</strong></h3><p>Benchmarks were conducted on <strong>CloudLab</strong> using the following configuration:</p>
+<ul>
+<li><strong>Nodes</strong>: Single <code>r320</code> instance with Ubuntu 22.04 OS.</li>
+<li><strong>Sharding</strong>: Keys distributed across three benchmarks, simulating varying workloads.</li>
+<li><strong>Metrics</strong>: <ul>
+<li><strong>Latency</strong>: Measured in nanoseconds.</li>
+<li><strong>Throughput</strong>: Measured as operations per second.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Benchmarking-Procedure"><a href="#Benchmarking-Procedure" class="headerlink" title="Benchmarking Procedure"></a><strong>Benchmarking Procedure</strong></h3><p>The benchmarking process involved running three workloads:</p>
+<ol>
+<li><strong>Benchmark A</strong>: All shards being concentrated in a single group.</li>
+<li><strong>Benchmark B</strong>: Shards are evenly distributed across two groups.</li>
+<li><strong>Benchmark C</strong>: While two groups are used, most requests are handled by one group.</li>
+</ol>
+<p>Metrics were instrumented during these benchmarks, and results were visualized using Matplotlib.</p>
+<hr>
+<h2 id="Results-and-Analysis"><a href="#Results-and-Analysis" class="headerlink" title="Results and Analysis"></a><strong>Results and Analysis</strong></h2><h3 id="Latency-Analysis"><a href="#Latency-Analysis" class="headerlink" title="Latency Analysis"></a><strong>Latency Analysis</strong></h3><p>The <strong>Cumulative Distribution Function (CDF)</strong> of latency for the three benchmarks is shown below:</p>
+<p><img src="/pdfs/LatencyBenchmark.png" alt="Latency CDF"></p>
+<h4 id="Observations"><a href="#Observations" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
+<li><strong>Benchmark A (Blue)</strong>: Exhibits the highest latency due to all shards being concentrated in a single group. The single server handling all requests results in high server load and poor performance.</li>
+<li><strong>Benchmark B (Yellow)</strong>: Shows the lowest latency as shards are evenly distributed across two groups, balancing the load and reducing bottlenecks.</li>
+<li><strong>Benchmark C (Red)</strong>: Latency falls between A and B. While two groups are used, most requests are handled by one group, with partial load balancing occurring.</li>
+</ul>
+<h3 id="Throughput-Analysis"><a href="#Throughput-Analysis" class="headerlink" title="Throughput Analysis"></a><strong>Throughput Analysis</strong></h3><p>The average throughput for each benchmark is summarized below:</p>
+<p><img src="/pdfs/ThroughputBenchmark.png" alt="Throughput Benchmark"></p>
+<h4 id="Observations-1"><a href="#Observations-1" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
+<li><strong>Benchmark A</strong>: All shards are joined to a single group, and one server handles all requests, creating a bottleneck. This results in the slowest throughput due to high server load.</li>
+<li><strong>Benchmark B</strong>: Shards are evenly split between two groups, resulting in the fastest throughput due to balanced load and reduced bottlenecks.</li>
+<li><strong>Benchmark C</strong>: Two groups are also used, but most requests are handled by one group, with some routed to the other. Throughput is intermediate, combining some load concentration and partial balancing.</li>
+</ul>
+<h3 id="Summary-of-Benchmarks"><a href="#Summary-of-Benchmarks" class="headerlink" title="Summary of Benchmarks"></a><strong>Summary of Benchmarks</strong></h3><ul>
+<li><strong>Benchmark A</strong>: Slowest due to server overload caused by all shards being handled by a single server.</li>
+<li><strong>Benchmark B</strong>: Fastest with balanced load distribution across two groups.</li>
+<li><strong>Benchmark C</strong>: Intermediate performance, balancing partial load concentration and reduced bottlenecks.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5koc6dl0005wvqthmz1ezyv" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -378,7 +376,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/06/20/3D_Sleep_Mask/" data-id="cm5knymh30001mqqt5x7q4ds7" data-title="3D Printed Sleep Mask Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/06/20/3D_Sleep_Mask/" data-id="cm5koc6dj0002wvqtcaz3855t" data-title="3D Printed Sleep Mask Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -416,7 +414,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/06/18/Stream_System_Project/" data-id="cm5knymh50005mqqt8s1ffxi3" data-title="Stream System Course Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/06/18/Stream_System_Project/" data-id="cm5koc6dk0004wvqt9ib48ril" data-title="Stream System Course Project" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -454,7 +452,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/20/Boston_311%20_Animal-Related_Data_Analysis/" data-id="cm5knymgy0000mqqt94rwe98x" data-title="Boston 311 Animal Analyisis" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/05/20/Boston_311%20_Animal-Related_Data_Analysis/" data-id="cm5koc6dg0000wvqt0iojb3wv" data-title="Boston 311 Animal Analyisis" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -484,7 +482,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">January 2099</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
     </div>
   </div>
 
@@ -497,15 +495,15 @@
       <ul>
         
           <li>
+            <a href="/2099/01/01/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
+          </li>
+        
+          <li>
             <a href="/2024/12/31/Mobile_Application_Project/">DreamCatcher Project</a>
           </li>
         
           <li>
-            <a href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus</a>
-          </li>
-        
-          <li>
-            <a href="/2024/07/18/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
+            <a href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)</a>
           </li>
         
           <li>

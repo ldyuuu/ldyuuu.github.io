@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>Sharded Distributed Key-Value Store with OmniPaxos Consensus | Dayu Li&#39;s Blog</title>
+  <title>Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go) | Dayu Li&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)IntroductionThis project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant Sharded Key">
+  <meta name="description" content="IntroductionThis project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant Sharded Key&#x2F;Value Store using the OmniPaxos consensus protocol. The system partitions k">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sharded Distributed Key-Value Store with OmniPaxos Consensus">
+<meta property="og:title" content="Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)">
 <meta property="og:url" content="http://example.com/2024/12/30/Distrubuted_System_Project/index.html">
 <meta property="og:site_name" content="Dayu Li&#39;s Blog">
-<meta property="og:description" content="Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)IntroductionThis project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant Sharded Key">
+<meta property="og:description" content="IntroductionThis project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant Sharded Key&#x2F;Value Store using the OmniPaxos consensus protocol. The system partitions k">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/pdfs/3B-Figure.png">
 <meta property="og:image" content="http://example.com/pdfs/LatencyBenchmark.png">
 <meta property="og:image" content="http://example.com/pdfs/ThroughputBenchmark.png">
 <meta property="article:published_time" content="2024-12-30T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-06T06:30:40.228Z">
+<meta property="article:modified_time" content="2025-01-06T06:40:22.184Z">
 <meta property="article:author" content="Dayu Li">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/pdfs/3B-Figure.png">
@@ -89,7 +89,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Sharded Distributed Key-Value Store with OmniPaxos Consensus
+      Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)
     </h1>
   
 
@@ -97,7 +97,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="Project-Report-Sharded-Distributed-Key-Value-Store-with-OmniPaxos-Consensus-Go"><a href="#Project-Report-Sharded-Distributed-Key-Value-Store-with-OmniPaxos-Consensus-Go" class="headerlink" title="Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)"></a>Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a><strong>Introduction</strong></h2><p>This project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant <strong>Sharded Key&#x2F;Value Store</strong> using the OmniPaxos consensus protocol. The system partitions keys across multiple replica groups to improve throughput and support scalability. The project consists of two main components:</p>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a><strong>Introduction</strong></h2><p>This project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant <strong>Sharded Key&#x2F;Value Store</strong> using the OmniPaxos consensus protocol. The system partitions keys across multiple replica groups to improve throughput and support scalability. The project consists of two main components:</p>
 <ol>
 <li><strong>Shard Controller</strong>: Manages shard assignments to replica groups and handles configuration changes.</li>
 <li><strong>Shard Key&#x2F;Value Servers</strong>: Stores and manages shards, ensuring linearizable operations across configurations.</li>
@@ -147,38 +147,36 @@
 </ul>
 <h3 id="Benchmarking-Procedure"><a href="#Benchmarking-Procedure" class="headerlink" title="Benchmarking Procedure"></a><strong>Benchmarking Procedure</strong></h3><p>The benchmarking process involved running three workloads:</p>
 <ol>
-<li><strong>Benchmark A</strong>: Static configuration with no shard migration.</li>
-<li><strong>Benchmark B</strong>: Frequent shard migrations due to configuration changes.</li>
-<li><strong>Benchmark C</strong>: A hybrid workload with a mix of static and dynamic shard assignments.</li>
+<li><strong>Benchmark A</strong>: All shards being concentrated in a single group.</li>
+<li><strong>Benchmark B</strong>: Shards are evenly distributed across two groups.</li>
+<li><strong>Benchmark C</strong>: While two groups are used, most requests are handled by one group.</li>
 </ol>
 <p>Metrics were instrumented during these benchmarks, and results were visualized using Matplotlib.</p>
 <hr>
 <h2 id="Results-and-Analysis"><a href="#Results-and-Analysis" class="headerlink" title="Results and Analysis"></a><strong>Results and Analysis</strong></h2><h3 id="Latency-Analysis"><a href="#Latency-Analysis" class="headerlink" title="Latency Analysis"></a><strong>Latency Analysis</strong></h3><p>The <strong>Cumulative Distribution Function (CDF)</strong> of latency for the three benchmarks is shown below:</p>
 <p><img src="/pdfs/LatencyBenchmark.png" alt="Latency CDF"></p>
 <h4 id="Observations"><a href="#Observations" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
-<li><strong>Benchmark A (Blue)</strong>: Exhibits the lowest latency due to its static configuration, with no overhead from shard migrations.</li>
-<li><strong>Benchmark B (Yellow)</strong>: Shows significantly higher latency due to frequent shard migrations, which introduce RPC overhead and coordination delays.</li>
-<li><strong>Benchmark C (Red)</strong>: Latency falls between A and B, as it mixes static and dynamic configurations, balancing stability and migration overhead.</li>
+<li><strong>Benchmark A (Blue)</strong>: Exhibits the highest latency due to all shards being concentrated in a single group. The single server handling all requests results in high server load and poor performance.</li>
+<li><strong>Benchmark B (Yellow)</strong>: Shows the lowest latency as shards are evenly distributed across two groups, balancing the load and reducing bottlenecks.</li>
+<li><strong>Benchmark C (Red)</strong>: Latency falls between A and B. While two groups are used, most requests are handled by one group, with partial load balancing occurring.</li>
 </ul>
 <h3 id="Throughput-Analysis"><a href="#Throughput-Analysis" class="headerlink" title="Throughput Analysis"></a><strong>Throughput Analysis</strong></h3><p>The average throughput for each benchmark is summarized below:</p>
 <p><img src="/pdfs/ThroughputBenchmark.png" alt="Throughput Benchmark"></p>
 <h4 id="Observations-1"><a href="#Observations-1" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
-<li>Benchmark A achieves the highest throughput as no resources are spent on shard migrations.</li>
-<li>Benchmark B has the lowest throughput due to migration overhead.</li>
-<li>Benchmark C strikes a balance, providing moderate throughput.</li>
+<li><strong>Benchmark A</strong>: All shards are joined to a single group, and one server handles all requests, creating a bottleneck. This results in the slowest throughput due to high server load.</li>
+<li><strong>Benchmark B</strong>: Shards are evenly split between two groups, resulting in the fastest throughput due to balanced load and reduced bottlenecks.</li>
+<li><strong>Benchmark C</strong>: Two groups are also used, but most requests are handled by one group, with some routed to the other. Throughput is intermediate, combining some load concentration and partial balancing.</li>
 </ul>
-<hr>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a><strong>Conclusion</strong></h2><p>This project demonstrates the implementation of a fault-tolerant, scalable Sharded Key&#x2F;Value Store with dynamic shard management. The performance benchmarking highlights the trade-offs between latency and throughput under varying workloads:</p>
-<ol>
-<li><strong>Static Configurations</strong> (Benchmark A): Best for low-latency, high-throughput systems where reconfiguration is rare.</li>
-<li><strong>Frequent Reconfigurations</strong> (Benchmark B): Suitable for highly dynamic environments but incurs higher latency and lower throughput.</li>
-<li><strong>Mixed Workloads</strong> (Benchmark C): Balances stability and adaptability, offering moderate performance.</li>
-</ol>
+<h3 id="Summary-of-Benchmarks"><a href="#Summary-of-Benchmarks" class="headerlink" title="Summary of Benchmarks"></a><strong>Summary of Benchmarks</strong></h3><ul>
+<li><strong>Benchmark A</strong>: Slowest due to server overload caused by all shards being handled by a single server.</li>
+<li><strong>Benchmark B</strong>: Fastest with balanced load distribution across two groups.</li>
+<li><strong>Benchmark C</strong>: Intermediate performance, balancing partial load concentration and reduced bottlenecks.</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5knymh40002mqqt81x62a3p" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5koc6dl0005wvqthmz1ezyv" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -198,9 +196,9 @@
     </a>
   
   
-    <a href="/2024/07/18/resume_of_DayuLi/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2024/06/20/3D_Sleep_Mask/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Dayu Li&#39;s Resume</div>
+      <div class="article-nav-title">3D Printed Sleep Mask Project</div>
     </a>
   
 </nav>
@@ -225,7 +223,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">January 2099</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
     </div>
   </div>
 
@@ -238,15 +236,15 @@
       <ul>
         
           <li>
+            <a href="/2099/01/01/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
+          </li>
+        
+          <li>
             <a href="/2024/12/31/Mobile_Application_Project/">DreamCatcher Project</a>
           </li>
         
           <li>
-            <a href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus</a>
-          </li>
-        
-          <li>
-            <a href="/2024/07/18/resume_of_DayuLi/">Dayu Li&#39;s Resume</a>
+            <a href="/2024/12/30/Distrubuted_System_Project/">Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)</a>
           </li>
         
           <li>
