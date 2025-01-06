@@ -13,14 +13,14 @@
 <meta property="og:site_name" content="Dayu Li&#39;s Blog">
 <meta property="og:description" content="Project Report: Sharded Distributed Key-Value Store with OmniPaxos Consensus (Go)IntroductionThis project focuses on designing, implementing, and benchmarking a distributed, fault-tolerant Sharded Key">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/3B-Figure.png">
-<meta property="og:image" content="http://example.com/LatencyBenchmark(CloudLab-r320).png">
-<meta property="og:image" content="http://example.com/ThroughputBenchmark(CloudLab-r320).png">
+<meta property="og:image" content="http://example.com/pdfs/3B-Figure.png">
+<meta property="og:image" content="http://example.com/pdfs/LatencyBenchmark.png">
+<meta property="og:image" content="http://example.com/pdfs/ThroughputBenchmark.png">
 <meta property="article:published_time" content="2024-12-30T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-06T06:12:08.441Z">
+<meta property="article:modified_time" content="2025-01-06T06:30:40.228Z">
 <meta property="article:author" content="Dayu Li">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/3B-Figure.png">
+<meta name="twitter:image" content="http://example.com/pdfs/3B-Figure.png">
   
     <link rel="alternate" href="/atom.xml" title="Dayu Li's Blog" type="application/atom+xml">
   
@@ -132,7 +132,7 @@
 <li><strong>Duplicate Request Handling</strong>: Ensures at-most-once semantics for client operations.</li>
 </ul>
 <h3 id="System-Workflow-Diagram"><a href="#System-Workflow-Diagram" class="headerlink" title="System Workflow Diagram"></a><strong>System Workflow Diagram</strong></h3><p>Below is an overview of the Sharded Key&#x2F;Value Store system workflow:</p>
-<p><img src="/3B-Figure.png" alt="System Workflow"></p>
+<p><img src="/pdfs/3B-Figure.png" alt="System Workflow"></p>
 <p>This diagram illustrates the interaction between clients, the shard controller, and shard key&#x2F;value servers. It also highlights the role of OmniPaxos in ensuring fault tolerance and consistency.</p>
 <hr>
 <h2 id="Performance-Benchmarking"><a href="#Performance-Benchmarking" class="headerlink" title="Performance Benchmarking"></a><strong>Performance Benchmarking</strong></h2><h3 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a><strong>Setup</strong></h3><p>Benchmarks were conducted on <strong>CloudLab</strong> using the following configuration:</p>
@@ -154,14 +154,14 @@
 <p>Metrics were instrumented during these benchmarks, and results were visualized using Matplotlib.</p>
 <hr>
 <h2 id="Results-and-Analysis"><a href="#Results-and-Analysis" class="headerlink" title="Results and Analysis"></a><strong>Results and Analysis</strong></h2><h3 id="Latency-Analysis"><a href="#Latency-Analysis" class="headerlink" title="Latency Analysis"></a><strong>Latency Analysis</strong></h3><p>The <strong>Cumulative Distribution Function (CDF)</strong> of latency for the three benchmarks is shown below:</p>
-<p><img src="/LatencyBenchmark(CloudLab-r320).png" alt="Latency CDF"></p>
+<p><img src="/pdfs/LatencyBenchmark.png" alt="Latency CDF"></p>
 <h4 id="Observations"><a href="#Observations" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
 <li><strong>Benchmark A (Blue)</strong>: Exhibits the lowest latency due to its static configuration, with no overhead from shard migrations.</li>
 <li><strong>Benchmark B (Yellow)</strong>: Shows significantly higher latency due to frequent shard migrations, which introduce RPC overhead and coordination delays.</li>
 <li><strong>Benchmark C (Red)</strong>: Latency falls between A and B, as it mixes static and dynamic configurations, balancing stability and migration overhead.</li>
 </ul>
 <h3 id="Throughput-Analysis"><a href="#Throughput-Analysis" class="headerlink" title="Throughput Analysis"></a><strong>Throughput Analysis</strong></h3><p>The average throughput for each benchmark is summarized below:</p>
-<p><img src="/ThroughputBenchmark(CloudLab-r320).png" alt="Throughput Benchmark"></p>
+<p><img src="/pdfs/ThroughputBenchmark.png" alt="Throughput Benchmark"></p>
 <h4 id="Observations-1"><a href="#Observations-1" class="headerlink" title="Observations:"></a>Observations:</h4><ul>
 <li>Benchmark A achieves the highest throughput as no resources are spent on shard migrations.</li>
 <li>Benchmark B has the lowest throughput due to migration overhead.</li>
@@ -178,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5kngqkb000097qt4bz64mrw" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/12/30/Distrubuted_System_Project/" data-id="cm5knymh40002mqqt81x62a3p" data-title="Sharded Distributed Key-Value Store with OmniPaxos Consensus" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
