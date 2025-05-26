@@ -52,7 +52,7 @@ Each replica group operates as a Paxos-backed storage system, serving a subset o
 
 Below is an overview of the Sharded Key/Value Store system workflow:
 
-![System Workflow](/pdfs/3bfigure.png)
+![System Workflow](pdfs/3bfigure.png)
 
 This diagram illustrates the interaction between clients, the shard controller, and shard key/value servers. It also highlights the role of OmniPaxos in ensuring fault tolerance and consistency.
 
