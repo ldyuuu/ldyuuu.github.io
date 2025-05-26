@@ -8,7 +8,7 @@ import vue from '@astrojs/vue'
 export default defineConfig({
   integrations: [mdx(), react(), vue()],
   site: 'https://ldyuuu.github.io',
-  base: '/astro-portfolio-starter',
+  //base: '/astro-portfolio-starter',
   markdown: {
     shikiConfig: {
       theme: 'material-theme',
