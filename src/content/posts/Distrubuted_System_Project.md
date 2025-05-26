@@ -2,6 +2,8 @@
 title: Sharded Distributed Key-Value Store with OmniPaxos Consensus(Go)
 date: 2024-12-30
 
+summary: "A fault-tolerant key-value store with dynamic sharding, powered by OmniPaxos consensus and benchmarked on CloudLab."
+tags: ["distributed systems", "Go", "OmniPaxos", "sharding", "RPC"]
 ---
 
 
