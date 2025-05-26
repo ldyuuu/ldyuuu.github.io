@@ -7,12 +7,12 @@ import developerImage from '@/images/developer.svg'
 import mindMapImage from '@/images/mind-map.svg'
 import codeReviewImage from '@/images/code-review.svg'
 import dotsTriangle from '@/images/dots-triangle.svg'
-import avatarImage from '@/images/avatar.png'
+import avatarImage from '@/images/avatar.jpg'
 ---
 
 <Layout title="Home">
   <main>
-    <section
+    <!-- <section
       class="hero mx-auto max-w-3xl flex flex-col sm:flex-row justify-between py-16 mt-24 px-4 xl:px-0"
     >
       <div class="text-4xl font-bold text-center sm:text-left">
@@ -29,7 +29,7 @@ import avatarImage from '@/images/avatar.png'
         <Image src={developerImage} alt="developer" class="mx-auto sm:mx-0" />
       </div>
     </section>
-    <!-- end hero -->
+   
 
     <section class="max-w-3xl mx-auto px-4 xl:px-0">
       <p class="dark:text-gray-100">
@@ -48,101 +48,92 @@ import avatarImage from '@/images/avatar.png'
           <Image src={codeReviewImage} alt="code review" />
         </div>
       </div>
+    </section> -->
+    <section id="about" class="max-w-3xl mx-auto mt-24 px-4 xl:px-0 py-8">
+      <h3 class="text-xl font-semibold dark:text-gray-100 mb-4">Get to know me</h3>
+    
+      <div class="flex items-center flex-col sm:flex-row gap-4">
+        <Image src={avatarImage} alt="avatar" class="rounded-full w-40 h-40" />
+        <p class="dark:text-gray-100 text-base leading-relaxed">
+          Hi, I’m Dayu Li — a software engineer passionate about building reliable systems
+          and exploring new technologies. I enjoy solving complex problems with simple, efficient solutions.
+          <br class="hidden sm:block" />
+          I recently completed my Master’s in  <span class="font-bold">Computer Science</span> at
+          <span class="font-bold">Boston University</span>, and am currently seeking full-time software engineering roles.
+          Feel free to explore my work and blog, and don’t hesitate to reach out if anything interests you!
+        </p>
+      </div>
     </section>
+
 
     <section
-      id="projects"
-      class="scroll-mt-16 max-w-3xl mx-auto border-t border-b border-gray-300 dark:border-gray-700 py-16 mb-16 relative px-4 xl:px-0"
-    >
-      <h3 class="dark:text-gray-100 font-bold">
-        Here are some projects I've worked on:
-      </h3>
+  id="projects"
+  class="scroll-mt-16 max-w-3xl mx-auto border-t border-b border-gray-300 dark:border-gray-700 py-16 mb-16 relative px-4 xl:px-0"
+>
+  <h3 class="dark:text-gray-100 font-bold text-xl">
+    Here are some projects I've worked on:
+  </h3>
 
-      <div class="absolute right-0 transform rotate-180 translate-x-[120%]">
-        <Image src={dotsTriangle} alt="dots" class="hidden xl:block" />
-      </div>
+  <div class="absolute right-0 transform rotate-180 translate-x-[120%]">
+    <Image src={dotsTriangle} alt="dots" class="hidden xl:block" />
+  </div>
 
-      <ul class="text-indigo-600 dark:text-indigo-500 mt-10 space-y-6">
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 1
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 2
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 3
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 4
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-      </ul>
-    </section>
+  <ul class="text-indigo-600 dark:text-indigo-500 mt-10 space-y-6">
+    <!-- Project 1 -->
+    <li class="flex items-start">
+      <IconCheckmark />
+      <span class="ml-4">
+        <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
+          Sharded Distributed Key-Value Store with OmniPaxos (Go)
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">
+          Built a fault-tolerant sharded key-value store in Go using the OmniPaxos consensus protocol. Designed a shard controller for dynamic reconfiguration across replica groups and implemented RPC-based migration to ensure consistency. Benchmarked on CloudLab, achieving +50 TPS on a single r320 instance.
+        </p>
+      </span>
+    </li>
 
-    <section
-      id="about"
-      class="scroll-mt-32 max-w-3xl mx-auto relative px-4 xl:px-0"
-    >
-      <h3 class="dark:text-gray-100 font-bold">Get to know me</h3>
+    <!-- Project 2 -->
+    <li class="flex items-start">
+      <IconCheckmark />
+      <span class="ml-4">
+        <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
+          Dreamcatcher: Dream Recording & AI Analysis App (Kotlin)
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">
+          Developed a mobile app with Jetpack Compose allowing users to record dreams, associate them with AI-generated visuals, and analyze sentiment using Hugging Face. Integrated Firebase Authentication, persistent offline gallery, and therapist suggestions based on geolocation.
+        </p>
+      </span>
+    </li>
 
-      <div class="flex items-center flex-col sm:flex-row mt-6">
-        <Image src={avatarImage} alt="avatar" class="rounded-full w-32 h-32" />
-        <div>
-          <p class="dark:text-gray-100 sm:ml-6 mt-6 sm:mt-0">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam
-            quam praesentium eligendi autem voluptate vero quo voluptatem, qui
-            possimus debitis iste amet ea voluptatum aut consectetur. Velit quos
-            at explicabo?
-          </p>
-        </div>
-      </div>
+    <!-- Project 3 -->
+    <li class="flex items-start">
+      <IconCheckmark />
+      <span class="ml-4">
+        <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
+          Apache Flink Recovery Latency Experiment
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">
+          Conducted performance analysis of Flink recovery latency under simulated failure using Kafka + Nexmark. Explored effects of varying checkpoint intervals and parallelism. Results informed adaptive checkpointing design based on throughput and latency benchmarks across 100+ iterations.
+        </p>
+      </span>
+    </li>
+    <!-- Project 4 -->
+    <li class="flex items-start">
+      <IconCheckmark />
+      <span class="ml-4">
+        <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
+          Boston 311 Animal Data Analysis (Python)
+        </h4>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">
+          Analyzed animal-related incident reports from the Boston 311 system using Python and Pandas. Identified seasonal patterns in stray animal activity and visualized trends with interactive dashboards, providing actionable insights for local services and public awareness.
+        </p>
+      </span>
+    </li>
+  </ul>
+</section>
 
-      <div class="my-16">
-        <iframe
-          class="w-full aspect-video"
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=1BVDnJeZozmDWGGk"
-          allowfullscreen></iframe>
-      </div>
-    </section>
+
+    
 
     <section
       id="contact"
