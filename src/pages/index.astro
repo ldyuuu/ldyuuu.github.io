@@ -157,7 +157,13 @@ import avatarImage from '@/images/avatar.jpg'
         </p>
 
         <div class="mt-12">
-          <form action="#" class="grid grid-cols-2 gap-6">
+          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="grid grid-cols-2 gap-6">
+            <!-- 必须的隐藏字段 -->
+            <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
+          
+            <!-- 你的原有表单结构保持不变 -->
+            <!-- Name -->
             <div class="col-span-2 sm:col-span-1">
               <label for="name" class="block dark:text-gray-100">Name</label>
               <input
@@ -165,32 +171,38 @@ import avatarImage from '@/images/avatar.jpg'
                 name="name"
                 id="name"
                 placeholder="Your name"
+                required
                 class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 p-4 mt-2"
               />
             </div>
+          
+            <!-- Email -->
             <div class="col-span-2 sm:col-span-1">
               <label for="email" class="block dark:text-gray-100">Email</label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 id="email"
                 placeholder="Your email"
+                required
                 class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 p-4 mt-2"
               />
             </div>
-
+          
+            <!-- Message -->
             <div class="col-span-2">
-              <label for="message" class="block dark:text-gray-100"
-                >Message</label
-              >
+              <label for="message" class="block dark:text-gray-100">Message</label>
               <textarea
                 rows="8"
                 name="message"
                 id="message"
+                required
                 class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 dark:ring-slate-700 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-indigo-600 p-4 mt-2"
-                placeholder="Enter your message here"></textarea>
+                placeholder="Enter your message here"
+              ></textarea>
             </div>
-
+          
+            <!-- Submit -->
             <div class="col-span-2">
               <div class="flex justify-end w-full">
                 <input
@@ -204,5 +216,7 @@ import avatarImage from '@/images/avatar.jpg'
         </div>
       </div>
     </section>
+    
+    
   </main>
 </Layout>
